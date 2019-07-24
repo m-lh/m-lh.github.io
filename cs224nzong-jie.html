@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>CS224N总结</title>
+
+            <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="神的笔记 Full Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="CS224n总结，收获，遗憾...">
+
+        <meta name="author" content="长恨安歌">
+
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="神的笔记">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chang-hen-an-ge.html">
+	<meta property="og:url" content="/cs224nzong-jie.html">
+	<meta property="og:title" content="CS224N总结">
+	<meta property="article:published_time" content="2017-06-04 00:00:00+08:00">
+            <meta property="og:description" content="CS224n总结，收获，遗憾...">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+</head>
+
+<body class="article-cs224nzong-jie">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">神的笔记</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('/theme/images/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>CS224N总结</h1>
+                        <span class="meta">Posted by
+                                <a href="/author/chang-hen-an-ge.html">长恨安歌</a>
+                             on 周日 04 六月 2017
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <h1>CS224n总结，收获，遗憾</h1>
+<p>一转眼都六月份，家里大同的太阳已经很热了。CS224n拖了很长时间，本来打算把作业是做完，然后再写总结的。但无奈身体一直不好，你吃没有精力把作业是做完。时间不等人，再不总结就都忘光了。说是总结，其实就是把这么长时间以来，留在脑子里的剩下这一点知识再稍微串一下吧遗留下来的才是最重要的精华。</p>
+<p>对照课程表，深入学习自然处理最开始部分就是谷歌的那个论文。word2vec</p>
+<p>通过把one_hot编码的单词转化成底维空间中的向量，极大的节约了空间，起来，提升了后续算法的准确率。不过后来glove算法的效果似乎更胜一筹。</p>
+<p>字嵌入词嵌入应该是所有的自然语言处理中，所有的第一步吧。模型的第一层，作业一是w2v的推导</p>
+<p>之后就课程主要是讲述了深度学习模型钱向传播。重点推倒了各种的反向传播算法。作业二就是它的应用，依存句法分析。</p>
+<p>他们期中考试完之后的那节课讲的是tf，有时可见实践与前沿</p>
+<p>再之后便进入了经典的rnn循环神经网络模型。</p>
+<p>从最基本的单个神经元。到逃stm，GRU这些模型。这些模型在作业三中都经过了推倒与tf实现。讲课中教师主要重点在于直观的理解</p>
+<p>之后便是注意力，极致和各种神经网络的变形。在做作业似的时候才发现在这里，我理解不是很扎实。</p>
+<p>这里便到了seq2seq模型，翻译nmt，语音识别（这节课的老师请了一个大牛来讲，但是我完全没有听懂。）</p>
+<p>最后便是深度神经网络与自然处理的其他一些前沿的研究，还有他遇到的一些问题。我在课程的学习过程中深刻的体会到了斯坦福大学对学生教育的重视和认真。也感到了好大学，对学生资源的投入。而且有那么多微软赞助的GPU资源。不过斯坦福大学的学生也令人佩服。真不知道他们是如何在三个月的时间中掌握到那么扎实的程度。</p>
+<p>他们其中是有总结课的，可惜期末并没有。对于我这种之前基本上没有深度学习经验的人来说，怎么可还是有一些困难。但是总体算是啊，我入了门。但是之后还是应该继续学习，或者重新看一遍本故而知新。</p>
+    </article>
+
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="#">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-you can add links in your config file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.zhihu.com/people/dreamapple/activities">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-zhihu fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  长恨安歌
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
