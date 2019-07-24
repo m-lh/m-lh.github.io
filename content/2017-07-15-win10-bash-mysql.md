@@ -1,3 +1,8 @@
+---
+Title: Win10 Bash Mysql
+Category: wsl
+---
+
 http://blog.csdn.net/quqi99/article/details/45100933
 
 对于ubuntu的虚机使用upstart时会报错：

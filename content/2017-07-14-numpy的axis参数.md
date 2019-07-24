@@ -1,3 +1,7 @@
+---
+Title: Numpy的axis参数理解
+Category: Python
+---
 
 # numpy的axis参数理解
 

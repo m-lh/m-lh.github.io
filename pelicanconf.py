@@ -10,7 +10,7 @@ PATH = 'content'
 
 TIMEZONE = 'Asia/Shanghai'
 
-DEFAULT_LANG = 'Chinese (Simplified)'
+DEFAULT_LANG = 'zh-cn'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -34,4 +34,4 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
-THEME = r"./pelican-clean-blog-theme"
+THEME = "./pelican-clean-blog-theme"
