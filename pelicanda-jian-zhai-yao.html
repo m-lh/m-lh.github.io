@@ -144,6 +144,7 @@ Done. Your new project is available at D:<span class="se">\b</span>log<span clas
 <span class="c1"># 下面拷贝写好的md文件到content目录</span>
 <span class="c1"># old/blog是以前使用旧的jekyll的博客内容</span>
 cp ../old/blog/_posts content
+<span class="c1"># invoke模块实时查看，执行</span>
 inv livereload
 inv gh-pages
 </pre></div>
@@ -183,14 +184,18 @@ output/
 # 将当前的目录提交到source分支。master用来作为主页。
 git checkout -b source
 git add .
-git commit -c &quot;init pelican config&quot;
+git commit -c &quot;init pelican&quot;
 
-# 获取远程代码修改后,想要push到远端与原来不同的新分支，可以使用下面的命令实现：
-# git push origin 本地分支:远端希望创建的分支
-git push origin source:source
+git push --set-upstream origin source
+git push
+</pre></div>
 
-# invoke模块实时查看，执行
-inv livereload
+
+<p>然后在github的设置中，将默认分支设置为source
+<img alt="github_default_branch" src="images/github_default_branch.png"></p>
+<p>以后就可以直接clone下来，修改内容，inv pg-pages了。</p>
+<h3>配置vscode</h3>
+<div class="highlight"><pre><span></span>code .
 </pre></div>
     </article>
 

@@ -1,5 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>神的笔记</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-07-24T00:00:00+08:00</updated><entry><title>Pelican搭建摘要</title><link href="/pelicanda-jian-zhai-yao.html" rel="alternate"></link><published>2019-07-24T00:00:00+08:00</published><updated>2019-07-24T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-24:/pelicanda-jian-zhai-yao.html</id><summary type="html">&lt;p&gt;自从换了电脑，好久没有更新blog了。重新收拾了一下这个blog，换了个主题，记录一下pelican搭建的步骤。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>神的笔记</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-07-26T00:00:00+08:00</updated><entry><title>创建vscode绑定</title><link href="/chuang-jian-vscodebang-ding.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/chuang-jian-vscodebang-ding.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;ctrl+space冲突&lt;/h2&gt;</content><category term="mix"></category></entry><entry><title>实现简单的C++ REPL</title><link href="/shi-xian-jian-dan-de-c-repl.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/shi-xian-jian-dan-de-c-repl.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;CxxREPL功能介绍&lt;/h2&gt;
+&lt;p&gt;CxxREPL实现了一个即时C++交互执行器。如下图
+&lt;img alt="" src="images/screen.svg"&gt;&lt;/p&gt;
+&lt;p&gt;功能如下：
+- 实现了变量定义和展示
+- 实现了#include宏支持
+- 实现了using语句
+- 实现了函数定义
+- 实现了函数调用
+- 实现了C++11支持
+···&lt;/p&gt;
+&lt;h2&gt;C++ REPL介绍&lt;/h2&gt;
+&lt;p&gt;REPL是Read-Eval-Print Loop的缩写，和平时的C++语言编译-执行模式不同，代表一种边读取边执行的方式。
+使用python语言进行编程的人很熟悉Python的解释器，它可以在Python输入一条语句之后直接运行输出结果，
+比如输入&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;可以很方便的进行原型验证和进行一些算数的求解。
+对于C++来说，进行编程很重要的依赖便是代码的智能提示和良好的个人编程素养，而对我们使用习惯Python的
+idle的人来说，没有一个解释执行的环境是很不方便的。
+可喜的是，cling是一个专为C++设计实现的交互式解释器，依赖llvm的工具链，可以完美的进行C++的解释和执行。
+其实现方式是自定义clang前端，记忆中间状态，从而实现对C++程序“部分解析”，边解析边编译运行。
+最大的缺点是项目庞大并且安装不方便。在官方下载包有300M的大小。&lt;/p&gt;
+&lt;p&gt;在2018cppcon中，实现了一个嵌入式的解释器，&lt;a href="https://github.com/onqtam/rcrl"&gt;RCRL&lt;/a&gt;项目。该项目将输入分为once、vars、global，
+分别进行不同的编译，将结果通过dlopen进行加载。该项目的输入需要用户对不同的输入类型注释，然后通过对不同的输入类型进行特殊的处理，
+才能实现内容的加载。而且其hack的代码比较多，并且通用性有限。&lt;/p&gt;
+&lt;h2&gt;CxxREPL的实现&lt;/h2&gt;
+&lt;p&gt;为了实现一个轻量级的解释器，在该CxxREPL中，使用类似RCRL的技术对代码进行动态链接库的编译，并进行实时加载，
+但是这里是通过编译器的报错进行输入类型的自动确定，并支持像cling中实时输出变量的值。&lt;/p&gt;
+&lt;p&gt;如下图为实现思路&lt;/p&gt;
+&lt;p&gt;&lt;img alt="" src="images/CxxREPL实现思路.png"&gt;&lt;/p&gt;
+&lt;p&gt;及流程图&lt;/p&gt;
+&lt;p&gt;&lt;img alt="" src="images/CxxREPL流程图.png"&gt;&lt;/p&gt;
+&lt;p&gt;该程序通过将输入的内容分为“声明”和“表达式”两类，并将末尾缺少“；”的输入识别为需要打印结果的语句，将输入内容分为四类：
+- 普通声明
+- 声明语句并打印声明结果
+- 表达式
+- 表达式并打印表达式计算结果&lt;/p&gt;
+&lt;p&gt;对于每种不同的类型依次进行编译，若编译通过则将动态链接库载入宿主程序，实现热加载。&lt;/p&gt;
+&lt;h3&gt;普通声明&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;int a=1;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;编译为&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;quot;other_declrations.h&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;普通声明并打印声明结果&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;编译为&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;quot;other_declrations.h&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;表达式&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;编译为&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;quot;other_declrations.h&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
+    &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;表达式并打印执行结果&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;编译为&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;quot;other_declrations.h&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;技术背景————plt，got&lt;/h2&gt;
+&lt;p&gt;实现一个C++语言的repl的难点主要是两个，一个是编译时的模块之间符号的共享，另一个是运行时状态的共享。
+在cling中，可以在“部分解析”中，保存之前解析的状态，故而在对语言语法分析时可以正确找到所引用的符号。而RCRL中对变量通过lambda程序的执行，在宿主程序为符号进行注册等管理，保证符号只载入一次。在CxxREPL中，符号通过C++语言的extern特性来查找不同模块中的符号，实现程序的静态编译与动态符号的加载。&lt;/p&gt;
+&lt;p&gt;CxxREPL的实现本质上利用了ELF文件为了程序动态链接和加载而支持的符号运行是链接加载技术，通过在编译时加入“全局符号定位表”，方便程序的动态链接和重定位。&lt;/p&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;p&gt;本文对CxxREPL项目的实现做了介绍，并与常见的REPL程序进行了对比。CxxREPL深度利用ELF文件的动态加载技术，实现了在千行以内的一个C++ REPL demo，实现简单，功能较为完整。&lt;/p&gt;</content><category term="C++"></category><category term="REPL"></category></entry><entry><title>想法记录</title><link href="/xiang-fa-ji-lu.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/xiang-fa-ji-lu.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;写一个工具，把脚本转化为菜单命令。&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;读取命令的help，分析参数&lt;/li&gt;
+&lt;li&gt;生成html页面作为程序执行的向导&lt;/li&gt;
+&lt;li&gt;注册该命令为vscode的菜单项&lt;/li&gt;
+&lt;li&gt;本身也是使用向导工作&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;写一个pelican-vscode插件&lt;/h2&gt;
+&lt;p&gt;功能有：
+1. quickstart
+2. 创建新的页面
+3. 预览
+4. 上传
+5. 状态栏支持
+6. 集成一些第三方的功能，比如paste-image
+7. 易通过python扩展&lt;/p&gt;</content><category term="pelican"></category><category term="publishing"></category></entry><entry><title>Pelican搭建摘要</title><link href="/pelicanda-jian-zhai-yao.html" rel="alternate"></link><published>2019-07-24T00:00:00+08:00</published><updated>2019-07-24T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-24:/pelicanda-jian-zhai-yao.html</id><summary type="html">&lt;p&gt;自从换了电脑，好久没有更新blog了。重新收拾了一下这个blog，换了个主题，记录一下pelican搭建的步骤。&lt;/p&gt;
 &lt;h3&gt;从头搭建&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install pelican  &lt;span class="c1"&gt;# 首先是主角pelican&lt;/span&gt;
 pip install markdown &lt;span class="c1"&gt;# 如果不安装markdown，是无法识别md文件的。&lt;/span&gt;
@@ -55,6 +168,7 @@ Done. Your new project is available at D:&lt;span class="se"&gt;\b&lt;/span&gt;l
 &lt;span class="c1"&gt;# 下面拷贝写好的md文件到content目录&lt;/span&gt;
 &lt;span class="c1"&gt;# old/blog是以前使用旧的jekyll的博客内容&lt;/span&gt;
 cp ../old/blog/_posts content
+&lt;span class="c1"&gt;# invoke模块实时查看，执行&lt;/span&gt;
 inv livereload
 inv gh-pages
 &lt;/pre&gt;&lt;/div&gt;
@@ -94,14 +208,18 @@ output/
 # 将当前的目录提交到source分支。master用来作为主页。
 git checkout -b source
 git add .
-git commit -c &amp;quot;init pelican config&amp;quot;
+git commit -c &amp;quot;init pelican&amp;quot;
 
-# 获取远程代码修改后,想要push到远端与原来不同的新分支，可以使用下面的命令实现：
-# git push origin 本地分支:远端希望创建的分支
-git push origin source:source
+git push --set-upstream origin source
+git push
+&lt;/pre&gt;&lt;/div&gt;
 
-# invoke模块实时查看，执行
-inv livereload
+
+&lt;p&gt;然后在github的设置中，将默认分支设置为source
+&lt;img alt="github_default_branch" src="images/github_default_branch.png"&gt;&lt;/p&gt;
+&lt;p&gt;以后就可以直接clone下来，修改内容，inv pg-pages了。&lt;/p&gt;
+&lt;h3&gt;配置vscode&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;code .
 &lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>不甘平庸</title><link href="/bu-gan-ping-yong.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2017-11-10:/bu-gan-ping-yong.html</id><content type="html">&lt;p&gt;周三收到了搜狗的拒信。还能回复一个拒绝的消息，也不错。&lt;/p&gt;
 &lt;p&gt;果然不玩游戏了有点闲不住。看知乎，算法工程师也是有一些开发的工作。&lt;/p&gt;
 &lt;p&gt;果然我还是没办法放弃做算法的目标。&lt;/p&gt;
