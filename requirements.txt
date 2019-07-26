@@ -1,0 +1,5 @@
+python==3
+pelican
+markdown
+invoke
+ghp-import
