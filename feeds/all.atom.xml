@@ -1,5 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>神的笔记</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-07-26T00:00:00+08:00</updated><entry><title>创建vscode绑定</title><link href="/chuang-jian-vscodebang-ding.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/chuang-jian-vscodebang-ding.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;ctrl+space冲突&lt;/h2&gt;</content><category term="mix"></category></entry><entry><title>实现简单的C++ REPL</title><link href="/shi-xian-jian-dan-de-c-repl.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/shi-xian-jian-dan-de-c-repl.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;CxxREPL功能介绍&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>神的笔记</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-08-10T00:00:00+08:00</updated><entry><title>使用clang的python绑定cindex解析C++文件</title><link href="/shi-yong-clangde-pythonbang-ding-cindexjie-xi-cwen-jian.html" rel="alternate"></link><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-08-10:/shi-yong-clangde-pythonbang-ding-cindexjie-xi-cwen-jian.html</id><summary type="html">&lt;p&gt;使用clang的python绑定cindex解析C++文件&lt;/p&gt;</summary><content type="html">&lt;p&gt;在Python中，对于C语言进行分析的话，可以使用pycparser，但是如果对C++进行分析的话，只有clang的Python绑定Cindex了。&lt;/p&gt;
+&lt;h2&gt;安装&lt;/h2&gt;
+&lt;p&gt;cindex随着clang发行，在github的位置是[https://github.com/llvm-mirror/clang/blob/master/bindings/python/clang/cindex.py]，
+但是安装比较繁琐。&lt;/p&gt;
+&lt;p&gt;不论是windows还是linux，第一步都是安装clang，windows直接去官方下载二进制即可，注意选择将path环境变量自动添加。&lt;/p&gt;
+&lt;p&gt;有人将cindex放到到pypi中取名为clang，[https://pypi.org/project/clang/]，这样就可以直接通过pypi安装了。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install clang
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在Python中调用时，Windows应该已经可以使用了，Linux需要配置libclang.so的路径。如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;clang.cindex&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Config&lt;/span&gt;
+&lt;span class="n"&gt;Config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_library_file&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/usr/lib/llvm-4.0/lib/libclang-4.0.so.1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;Config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_library_path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/usr/lib/llvm-4.0/lib&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;简单介绍&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;clang.cindex&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;clang.cindex&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CursorKind&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 一整个项目的索引对应一个Index&lt;/span&gt;
+&lt;span class="n"&gt;index&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 一个翻译单元对应一个文件。可以接受提供给gcc的所有参数&lt;/span&gt;
+&lt;span class="n"&gt;translation_unit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="c1"&gt;# cursor是translation_unit的一个最重要的属性，对应的是语法树的根节点。&lt;/span&gt;
+&lt;span class="n"&gt;root_node&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;translation_unit&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cursor&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 这个节点的枚举类型,例如CursorKind.FUNCTION_DECL&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_node&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 这个节点的源代码名字？&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_node&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;spelling&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 这个节点在源代码的位置&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_node&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;location&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 这个节点的子节点&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_node&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_children&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+
+&lt;span class="n"&gt;extent信息比get_location&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;丰富一些&lt;/span&gt;
+
+&lt;span class="c1"&gt;# 获取分词结果&lt;/span&gt;
+&lt;span class="n"&gt;cur&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_tokens&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;常用方式&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;clang.cindex&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Index&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CursorKind&lt;/span&gt;
+
+&lt;span class="n"&gt;g_index&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_string&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;memory_file&amp;gt;.cpp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="sd"&gt;    利用unsaved_files的参数特性，直接载入内存中的源代码&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;g_index&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;unsaved_files&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cursor&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;分析下面的C++代码&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Person&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Room&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;add_person&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt; &lt;span class="n"&gt;person&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// do stuff&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;people_in_room&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;T&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Bag&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;N&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="n"&gt;Bag&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Person&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;42&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;bagofpersons&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;测试目录 D:\workspace\cparser_plus
+&lt;/pre&gt;&lt;/div&gt;</content><category term="C++"></category><category term="python"></category></entry><entry><title>cython上手记录</title><link href="/cython.html" rel="alternate"></link><published>2019-08-01T00:00:00+08:00</published><updated>2019-08-01T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-08-01:/cython.html</id><summary type="html">&lt;p&gt;cython上手记录&lt;/p&gt;</summary><content type="html">&lt;p&gt;cython是一个&lt;/p&gt;
+&lt;h2&gt;比较def, cdef, cpdef&lt;/h2&gt;
+&lt;p&gt;https://stackoverflow.com/questions/28362009/definition-of-def-cdef-and-cpdef-in-cython&lt;/p&gt;
+&lt;p&gt;The key difference is in where the function can be called from: def functions can be called from Python and Cython while cdef function can be called from Cython and C.&lt;/p&gt;
+&lt;p&gt;Both types of functions can be declared with any mixture of typed and untyped arguments, and in both cases the internals are compiled to C by Cython (and the compiled code should be very, very similar):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# A Cython class for illustrative purposes&lt;/span&gt;
+&lt;span class="n"&gt;cdef&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+   &lt;span class="k"&gt;pass&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arg1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="n"&gt;arg2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;arg3&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="c1"&gt;# takes an integer, a &amp;quot;C&amp;quot; and an untyped generic python object&lt;/span&gt;
+    &lt;span class="k"&gt;pass&lt;/span&gt;
+
+&lt;span class="n"&gt;cdef&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="n"&gt;arg1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="n"&gt;arg2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;arg3&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;pass&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In the example above, f will be visible to Python (once it has imported the Cython module) and g will not be and cannot be called from Python. g will translate into a C signature of:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;PyObject* some_name(int, struct __pyx_obj_11name_of_module_C *, PyObject*)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;(where&lt;code&gt;struct __pyx_obj_11name_of_module_C *&lt;/code&gt; is just the C struct that our class C is translated into). This allows it to be passed to C functions as a function pointer for example. In contrast f cannot (easily) be called from C.&lt;/p&gt;
+&lt;h3&gt;Restrictions on &lt;code&gt;cdef&lt;/code&gt; functions:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;cdef functions cannot be defined inside other functions - this is because there is no way of storing any captured variables in a C function pointer. E.g. the following code is illegal:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# WON&amp;#39;T WORK!
+def g(a):
+   cdef (int b):
+      return a+b
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;cdef functions cannot take &lt;em&gt;args and &lt;/em&gt;*kwargs type arguments. This is because they cannot easily be translated into a C signature.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Advantages of cdef functions&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;cdef functions can take any type of argument, including those that have no Python equivalent (for example pointers). def functions cannot have these, since they must be callable from Python.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;cdef functions can also specify a return type (if it is not specified then they return a Python object, PyObject* in C). def functions always return a Python object, so cannot specify a return type:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cdef int h(int* a):
+    # specify a return type and take a non-Python compatible argument
+    return a[0]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;cdef functions are quicker to call than def functions because they translate to a simple C function call.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;cpdef functions&lt;/h3&gt;
+&lt;p&gt;cpdef functions cause Cython to generate a cdef function (that allows a quick function call from Cython) and a def function (which allows you to call it from Python). Interally the def function just calls the cdef function. In terms of the types of arguments allowed, cpdef functions have all the restrictions of both cdef and def functions.&lt;/p&gt;
+&lt;h3&gt;When to use a cdef function&lt;/h3&gt;
+&lt;p&gt;Once the function has been called there is no difference in the speed that the code inside a cdef and a def function runs at. Therefore, only use a cdef function if:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You need to pass non-Python types in or out, or&lt;/li&gt;
+&lt;li&gt;You need to pass it to C as a function pointer, or&lt;/li&gt;
+&lt;li&gt;You are calling it often (so the sped-up function call is important) and you don't need to call it from Python.
+Use a cpdef function when you are calling it often (so the sped-up function call is important) but you do need to call it from Python.&lt;/li&gt;
+&lt;/ul&gt;</content><category term="python"></category><category term="cython"></category></entry><entry><title>腾讯云配置记录</title><link href="/teng-xun-yun-pei-zhi-ji-lu.html" rel="alternate"></link><published>2019-08-01T00:00:00+08:00</published><updated>2019-08-01T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-08-01:/teng-xun-yun-pei-zhi-ji-lu.html</id><summary type="html">&lt;p&gt;腾讯云配置记录&lt;/p&gt;</summary><content type="html">&lt;p&gt;ip is 124.156.183.194&lt;/p&gt;
+&lt;h2&gt;安装conda&lt;/h2&gt;
+&lt;p&gt;https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+sh Miniconda3-latest-Linux-x86_64.sh
+&lt;span class="c1"&gt;# 多次yes&lt;/span&gt;
+&lt;span class="nb"&gt;source&lt;/span&gt; .bashrc
+which pip
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --set show_channel_urls yes
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;安装ss&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install git+https://github.com/shadowsocks/shadowsocks.git@master
+which ssserver
+ssserver -p &lt;span class="m"&gt;44308&lt;/span&gt; -k qwe -m aes-256-cfb  &lt;span class="c1"&gt;# 测试一下&lt;/span&gt;
+&lt;span class="c1"&gt;# server 这个不是随便的，通过hostname看一下&lt;/span&gt;
+sudo vim /etc/shadowsocks.json
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;输入下面的内容&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;{
+    &amp;quot;server&amp;quot;:&amp;quot;0.0.0.0&amp;quot;,
+    &amp;quot;server_port&amp;quot;:44308,
+    &amp;quot;password&amp;quot;:&amp;quot;qwe&amp;quot;,
+    &amp;quot;timeout&amp;quot;:300,
+    &amp;quot;method&amp;quot;:&amp;quot;aes-256-cfb&amp;quot;,
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;sudo /home/ubuntu/miniconda3/bin/ssserver -c /etc/shadowsocks.json -d start&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## centos 版本
+
+### 添加用户
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;adduser meng
+passwd meng
+whereis sudoers
+chmod -v u+w /etc/sudoers
+vi /etc/sudoers&lt;/p&gt;
+&lt;h1&gt;添加meng[TAB]ALL[TAB]NOPASSWD: ALL&lt;/h1&gt;
+&lt;p&gt;chmod -v u-w /etc/sudoers
+history | cut -c28-&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;su meng
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+```&lt;/p&gt;</content><category term="python"></category></entry><entry><title>Python有意思库的记录</title><link href="/pythonyou-yi-si-ku-de-ji-lu.html" rel="alternate"></link><published>2019-07-31T00:00:00+08:00</published><updated>2019-07-31T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-31:/pythonyou-yi-si-ku-de-ji-lu.html</id><summary type="html">&lt;p&gt;记录一些有意思的Python库&lt;/p&gt;</summary><content type="html">&lt;h3&gt;&lt;a href="https://github.com/tldr-pages/tldr"&gt;tldr&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TL;DR stands for "Too Long; Didn't Read".
+对于常用的命令可以代替man手册，只看使用方法。
+不过复杂的内容还是应该使用man查找。&lt;/p&gt;</content><category term="python"></category></entry><entry><title>上手quickjs</title><link href="/shang-shou-quickjs.html" rel="alternate"></link><published>2019-07-31T00:00:00+08:00</published><updated>2019-07-31T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-31:/shang-shou-quickjs.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;p&gt;闲逛github看到了https://github.com/quickjs-zh/QuickJS，上次还在新闻上看到了。这个zh项目只是做了一点翻译，有点像是盗版的。&lt;/p&gt;
+&lt;p&gt;为了在WSL上玩一下，执行以下命令&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget https://bellard.org/quickjs/quickjs-2019-07-28.tar.xz
+tar -xJf quickjs-2019-07-28.tar.xz
+&lt;span class="nb"&gt;cd&lt;/span&gt; quickjs-2019-07-28/
+make
+&lt;span class="c1"&gt;# 报错/usr/include/features.h:367:25: fatal error: sys/cdefs.h: No such file or directory&lt;/span&gt;
+sudo apt install libc6-dev-i386
+make
+./qjs
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;编译成动态链接库试一下，尝试了半天终于成功了&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;gcc -fPIC -shared -DCONFIG_VERSION=\&amp;quot;2019-07-09\&amp;quot; -D_GNU_SOURCE -DCONFIG_BIGNUM quickjs.c libunicode.c libregexp.c cutils.c quickjs-libc.c libbf.c -o libquickjs.so
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在Python中用ctypes调用一下试一试&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;ctypes&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="n"&gt;js&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cdll&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;LoadLibrary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;./libquicKjs.so&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;CDLL&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;./libquickjs.so&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;handle&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="n"&gt;ffff2716d20&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="mh"&gt;0x7f346d4101d0&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="n"&gt;js&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;JS_NewRuntime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;restype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c_void_p&lt;/span&gt;
+&lt;span class="n"&gt;rt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;js&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;JS_NewRuntime&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;rt&lt;/span&gt;
+&lt;span class="mi"&gt;140737261618464&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="nc"&gt;int&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;用cython尝试写一个wrapper&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mkdir python
+&lt;span class="nb"&gt;cd&lt;/span&gt; python
+touch cquickjs.pyd
+touch quickjs.pyx
+touch setup.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;setup.py的内容基本是固定的，参考
+- [http://docs.cython.org/en/latest/src/tutorial/clibraries.html]简单介绍写wrapper的setup.py的写法
+- [http://docs.cython.org/en/latest/src/userguide/source_files_and_compilation.html]详细介绍setup.py的写法
+- [https://docs.python.org/3/distutils/apiref.html#distutils.core.Extension]列举Extension的参数，相当于给gcc传递参数&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# setup.py&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;distutils.core&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;setup&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;distutils.extension&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Extension&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;Cython.Build&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;cythonize&lt;/span&gt;
+
+&lt;span class="n"&gt;define_macros&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;CONFIG_VERSION&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;quot;2019-07-09&amp;quot;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;_GNU_SOURCE&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;CONFIG_BIGNUM&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;span class="n"&gt;sources&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;../quickjs.c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../libunicode.c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../libregexp.c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../cutils.c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../quickjs-libc.c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../libbf.c&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="n"&gt;ext&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Extension&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;quickjs&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+        &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;quickjs.pyx&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;sources&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+        &lt;span class="n"&gt;define_macros&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;define_macros&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="n"&gt;include_dirs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;..&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ext_modules&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cythonize&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;ext&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;span class="c1"&gt;# python setup.py build_ext -i&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;https://raw.githubusercontent.com/quickjs-zh/quickjspp/master/quickjspp.hpp&lt;/p&gt;</content><category term="C++"></category><category term="python"></category></entry><entry><title>创建方便写博客的vscode的插件</title><link href="/chuang-jian-fang-bian-xie-bo-ke-de-vscodede-cha-jian.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/chuang-jian-fang-bian-xie-bo-ke-de-vscodede-cha-jian.html</id><summary type="html">&lt;p&gt;创建方便写博客的vscode的插件&lt;/p&gt;</summary><content type="html">&lt;h1&gt;背景&lt;/h1&gt;
+&lt;p&gt;在博客撰写中，vscode是一个方便的编辑器，但是还是缺少一些方便的操作。&lt;/p&gt;
+&lt;h1&gt;需求分析&lt;/h1&gt;
+&lt;h2&gt;较高优先级的功能&lt;/h2&gt;
+&lt;h3&gt;1. 新建博客&lt;/h3&gt;
+&lt;p&gt;新建一个博客&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;菜单文件添加新建博客条目或者使用绑定ctrl+n快捷键新建博客&lt;/li&gt;
+&lt;li&gt;交互输入博客题目&lt;/li&gt;
+&lt;li&gt;新建文件&lt;/li&gt;
+&lt;li&gt;文件内容输入初始内容。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;2. 一键发布&lt;/h3&gt;
+&lt;p&gt;通过一个按键进行博客发布&lt;/p&gt;
+&lt;h2&gt;优先级靠后的功能&lt;/h2&gt;
+&lt;h3&gt;1. 一键预览&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;inv livereload
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;但是集成在vscode的一个新的页面&lt;/p&gt;
+&lt;h3&gt;2. 屏蔽git的操作&lt;/h3&gt;
+&lt;p&gt;看不到对git的操作。
+新建一个树的展示板&lt;/p&gt;</content><category term="mix"></category></entry><entry><title>实现简单的C++ REPL</title><link href="/shi-xian-jian-dan-de-c-repl.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/shi-xian-jian-dan-de-c-repl.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;CxxREPL功能介绍&lt;/h2&gt;
 &lt;p&gt;CxxREPL实现了一个即时C++交互执行器。如下图
 &lt;img alt="" src="images/screen.svg"&gt;&lt;/p&gt;
 &lt;p&gt;功能如下：
@@ -106,35 +411,58 @@ idle的人来说，没有一个解释执行的环境是很不方便的。
 &lt;/ol&gt;
 &lt;h2&gt;写一个pelican-vscode插件&lt;/h2&gt;
 &lt;p&gt;功能有：
-1. quickstart
+1. 集成quickstart功能，自动申请gh-pages
 2. 创建新的页面
 3. 预览
 4. 上传
 5. 状态栏支持
 6. 集成一些第三方的功能，比如paste-image
-7. 易通过python扩展&lt;/p&gt;</content><category term="pelican"></category><category term="publishing"></category></entry><entry><title>Pelican搭建摘要</title><link href="/pelicanda-jian-zhai-yao.html" rel="alternate"></link><published>2019-07-24T00:00:00+08:00</published><updated>2019-07-24T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-24:/pelicanda-jian-zhai-yao.html</id><summary type="html">&lt;p&gt;自从换了电脑，好久没有更新blog了。重新收拾了一下这个blog，换了个主题，记录一下pelican搭建的步骤。&lt;/p&gt;
-&lt;h3&gt;从头搭建&lt;/h3&gt;
+7. 可以方便通过查看invoke文件，自动添加命令到菜单&lt;/p&gt;
+&lt;h2&gt;收藏夹管理器&lt;/h2&gt;
+&lt;p&gt;对收藏加管理是一件比较头疼的事情
+chrome的收藏夹只有一条比较难以管理
+但是今天发现，其收藏夹只能按照目录精心管理，需要花费较大心思
+因为分类较为困难，而且不同维度分类极容易产生正交&lt;/p&gt;
+&lt;p&gt;所以可以使用tag即标签进行书签管理。
+对每一个书签进行tag添加，如一个书签有tag：待会读、C++、教程、博客等标签，
+另外需要对tag进行管理，将书签分为多个维度
+已经阅读，还未阅读
+C++、Python等编程语言分类
+系统架构、系统底层等系统层级分类
+参考文档、教程等难易度浅显深入分类
+资源类与详细介绍
+有的相互正交，有的是包含关系，有的是交叉关系
+然后书签栏通过tag进行进入，并且同一个书签可能出现在不同的tag之中。&lt;/p&gt;</content><category term="pelican"></category><category term="publishing"></category></entry><entry><title>Pelican搭建摘要</title><link href="/pelicanda-jian-zhai-yao.html" rel="alternate"></link><published>2019-07-24T00:00:00+08:00</published><updated>2019-07-24T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-24:/pelicanda-jian-zhai-yao.html</id><summary type="html">&lt;p&gt;自从换了电脑，好久没有更新blog了。重新收拾了一下这个blog，换了个主题，记录一下pelican搭建的步骤。&lt;/p&gt;
+&lt;h2&gt;首次安装&lt;/h2&gt;
+&lt;p&gt;首先介绍首次安装需要的步骤。在windows和linux应该都是一样的。&lt;/p&gt;
+&lt;h3&gt;安装扩展&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install pelican  &lt;span class="c1"&gt;# 首先是主角pelican&lt;/span&gt;
 pip install markdown &lt;span class="c1"&gt;# 如果不安装markdown，是无法识别md文件的。&lt;/span&gt;
 pip install invoke   &lt;span class="c1"&gt;# 安装invoke就可以使用invoke自动管理文件了。&lt;/span&gt;
 pip install ghp-import &lt;span class="c1"&gt;# ghp-import是专门提交文档分支的工具。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="c1"&gt;# 申请ghpage，然后clone到本地&lt;/span&gt;
+
+&lt;h3&gt;初始化&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 申请ghpage，然后clone到本地&lt;/span&gt;
 git clone https://github.com/m-lh/m-lh.github.io.git
 &lt;span class="nb"&gt;cd&lt;/span&gt; m-lh.github.io
 pelican-quickstart
 &lt;span class="c1"&gt;# 下面回答一系列问题&lt;/span&gt;
 &lt;span class="c1"&gt;# 但是回答的问题可以在配置文件修改。主要是设置gh-page为y就行。&lt;/span&gt;
-Welcome to pelican-quickstart v4.1.0.
-
-This …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;自从换了电脑，好久没有更新blog了。重新收拾了一下这个blog，换了个主题，记录一下pelican搭建的步骤。&lt;/p&gt;
-&lt;h3&gt;从头搭建&lt;/h3&gt;
+Welcome to pelican-quickstart …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;自从换了电脑，好久没有更新blog了。重新收拾了一下这个blog，换了个主题，记录一下pelican搭建的步骤。&lt;/p&gt;
+&lt;h2&gt;首次安装&lt;/h2&gt;
+&lt;p&gt;首先介绍首次安装需要的步骤。在windows和linux应该都是一样的。&lt;/p&gt;
+&lt;h3&gt;安装扩展&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install pelican  &lt;span class="c1"&gt;# 首先是主角pelican&lt;/span&gt;
 pip install markdown &lt;span class="c1"&gt;# 如果不安装markdown，是无法识别md文件的。&lt;/span&gt;
 pip install invoke   &lt;span class="c1"&gt;# 安装invoke就可以使用invoke自动管理文件了。&lt;/span&gt;
 pip install ghp-import &lt;span class="c1"&gt;# ghp-import是专门提交文档分支的工具。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="c1"&gt;# 申请ghpage，然后clone到本地&lt;/span&gt;
+
+&lt;h3&gt;初始化&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 申请ghpage，然后clone到本地&lt;/span&gt;
 git clone https://github.com/m-lh/m-lh.github.io.git
 &lt;span class="nb"&gt;cd&lt;/span&gt; m-lh.github.io
 pelican-quickstart
@@ -164,8 +492,11 @@ needed by Pelican.
 &amp;gt; Do you want to upload your website using GitHub Pages? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; y
 &amp;gt; Is this your personal page &lt;span class="o"&gt;(&lt;/span&gt;username.github.io&lt;span class="o"&gt;)&lt;/span&gt;? &lt;span class="o"&gt;(&lt;/span&gt;y/N&lt;span class="o"&gt;)&lt;/span&gt; y
 Done. Your new project is available at D:&lt;span class="se"&gt;\b&lt;/span&gt;log&lt;span class="se"&gt;\m&lt;/span&gt;-lh.github.io
+&lt;/pre&gt;&lt;/div&gt;
 
-&lt;span class="c1"&gt;# 下面拷贝写好的md文件到content目录&lt;/span&gt;
+
+&lt;h3&gt;撰写内容&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# 下面拷贝写好的md文件到content目录&lt;/span&gt;
 &lt;span class="c1"&gt;# old/blog是以前使用旧的jekyll的博客内容&lt;/span&gt;
 cp ../old/blog/_posts content
 &lt;span class="c1"&gt;# invoke模块实时查看，执行&lt;/span&gt;
@@ -218,9 +549,23 @@ git push
 &lt;p&gt;然后在github的设置中，将默认分支设置为source
 &lt;img alt="github_default_branch" src="images/github_default_branch.png"&gt;&lt;/p&gt;
 &lt;p&gt;以后就可以直接clone下来，修改内容，inv pg-pages了。&lt;/p&gt;
-&lt;h3&gt;配置vscode&lt;/h3&gt;
+&lt;h3&gt;使用vscode编辑&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;code .
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>不甘平庸</title><link href="/bu-gan-ping-yong.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2017-11-10:/bu-gan-ping-yong.html</id><content type="html">&lt;p&gt;周三收到了搜狗的拒信。还能回复一个拒绝的消息，也不错。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;日常使用&lt;/h2&gt;
+&lt;p&gt;如果本地没有，先clone下来
+1. git clone https://github.com/m-lh/m-lh.github.io.git
+2. cd m-lh.github.io
+3. 切换到source分支，不过默认就是source分支。git branch source&lt;/p&gt;
+&lt;p&gt;步骤如下:
+1. 在content目录添加文章
+2. inv livereload
+3. git add 内容
+4. git commit
+5. git push --set-upstream origin source
+6. inv gh-pages&lt;/p&gt;</content></entry><entry><title>不甘平庸</title><link href="/bu-gan-ping-yong.html" rel="alternate"></link><published>2017-11-10T00:00:00+08:00</published><updated>2017-11-10T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2017-11-10:/bu-gan-ping-yong.html</id><content type="html">&lt;p&gt;周三收到了搜狗的拒信。还能回复一个拒绝的消息，也不错。&lt;/p&gt;
 &lt;p&gt;果然不玩游戏了有点闲不住。看知乎，算法工程师也是有一些开发的工作。&lt;/p&gt;
 &lt;p&gt;果然我还是没办法放弃做算法的目标。&lt;/p&gt;
 &lt;p&gt;难道是“覆没成本”作祟？我也不知道。&lt;/p&gt;

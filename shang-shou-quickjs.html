@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>上手quickjs</title>
+
+            <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="神的笔记 Full Atom Feed" />
+        <!-- Bootstrap Core CSS -->
+        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+
+        <!-- Code highlight color scheme -->
+            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+
+
+        <meta name="description" content="Short Summary">
+
+        <meta name="author" content="长恨安歌">
+
+        <meta name="tags" content="C++">
+        <meta name="tags" content="python">
+
+	                <meta property="og:locale" content="">
+		<meta property="og:site_name" content="神的笔记">
+
+	<meta property="og:type" content="article">
+            <meta property="article:author" content="/author/chang-hen-an-ge.html">
+	<meta property="og:url" content="/shang-shou-quickjs.html">
+	<meta property="og:title" content="上手quickjs">
+	<meta property="article:published_time" content="2019-07-31 00:00:00+08:00">
+            <meta property="og:description" content="Short Summary">
+
+            <meta property="og:image" content="/theme/images/post-bg.jpg">
+</head>
+
+<body class="article-shang-shou-quickjs">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">神的笔记</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+        <header class="intro-header" style="background-image: url('/theme/images/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>上手quickjs</h1>
+                        <span class="meta">Posted by
+                                <a href="/author/chang-hen-an-ge.html">长恨安歌</a>
+                             on 周三 31 七月 2019
+                        </span>
+                            <span class="meta">Updated on 周三 31 七月 2019</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Post Content -->
+    <article>
+        <p>闲逛github看到了https://github.com/quickjs-zh/QuickJS，上次还在新闻上看到了。这个zh项目只是做了一点翻译，有点像是盗版的。</p>
+<p>为了在WSL上玩一下，执行以下命令</p>
+<div class="highlight"><pre><span></span>wget https://bellard.org/quickjs/quickjs-2019-07-28.tar.xz
+tar -xJf quickjs-2019-07-28.tar.xz
+<span class="nb">cd</span> quickjs-2019-07-28/
+make
+<span class="c1"># 报错/usr/include/features.h:367:25: fatal error: sys/cdefs.h: No such file or directory</span>
+sudo apt install libc6-dev-i386
+make
+./qjs
+</pre></div>
+
+
+<p>编译成动态链接库试一下，尝试了半天终于成功了</p>
+<div class="highlight"><pre><span></span>gcc -fPIC -shared -DCONFIG_VERSION=\&quot;2019-07-09\&quot; -D_GNU_SOURCE -DCONFIG_BIGNUM quickjs.c libunicode.c libregexp.c cutils.c quickjs-libc.c libbf.c -o libquickjs.so
+</pre></div>
+
+
+<p>在Python中用ctypes调用一下试一试</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">cdll</span><span class="o">.</span><span class="n">LoadLibrary</span><span class="p">(</span><span class="s1">&#39;./libquicKjs.so&#39;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">CDLL</span> <span class="s1">&#39;./libquickjs.so&#39;</span><span class="p">,</span> <span class="n">handle</span> <span class="mi">7</span><span class="n">ffff2716d20</span> <span class="n">at</span> <span class="mh">0x7f346d4101d0</span><span class="o">&gt;</span>
+<span class="n">js</span><span class="o">.</span><span class="n">JS_NewRuntime</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_void_p</span>
+<span class="n">rt</span> <span class="o">=</span> <span class="n">js</span><span class="o">.</span><span class="n">JS_NewRuntime</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rt</span>
+<span class="mi">140737261618464</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">int</span><span class="s1">&#39;&gt;</span>
+</pre></div>
+
+
+<p>用cython尝试写一个wrapper</p>
+<div class="highlight"><pre><span></span>mkdir python
+<span class="nb">cd</span> python
+touch cquickjs.pyd
+touch quickjs.pyx
+touch setup.py
+</pre></div>
+
+
+<p>setup.py的内容基本是固定的，参考
+- [http://docs.cython.org/en/latest/src/tutorial/clibraries.html]简单介绍写wrapper的setup.py的写法
+- [http://docs.cython.org/en/latest/src/userguide/source_files_and_compilation.html]详细介绍setup.py的写法
+- [https://docs.python.org/3/distutils/apiref.html#distutils.core.Extension]列举Extension的参数，相当于给gcc传递参数</p>
+<div class="highlight"><pre><span></span><span class="c1"># setup.py</span>
+<span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+<span class="kn">from</span> <span class="nn">distutils.extension</span> <span class="kn">import</span> <span class="n">Extension</span>
+<span class="kn">from</span> <span class="nn">Cython.Build</span> <span class="kn">import</span> <span class="n">cythonize</span>
+
+<span class="n">define_macros</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;CONFIG_VERSION&#39;</span><span class="p">,</span><span class="s1">&#39;&quot;2019-07-09&quot;&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;_GNU_SOURCE&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;CONFIG_BIGNUM&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)]</span>
+<span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;../quickjs.c&#39;</span><span class="p">,</span> <span class="s1">&#39;../libunicode.c&#39;</span><span class="p">,</span> <span class="s1">&#39;../libregexp.c&#39;</span><span class="p">,</span> <span class="s1">&#39;../cutils.c&#39;</span><span class="p">,</span> <span class="s1">&#39;../quickjs-libc.c&#39;</span><span class="p">,</span> <span class="s1">&#39;../libbf.c&#39;</span><span class="p">]</span>
+
+<span class="n">ext</span> <span class="o">=</span> <span class="n">Extension</span><span class="p">(</span><span class="s2">&quot;quickjs&quot;</span><span class="p">,</span> 
+        <span class="p">[</span><span class="s2">&quot;quickjs.pyx&quot;</span><span class="p">]</span><span class="o">+</span><span class="n">sources</span><span class="p">,</span> 
+        <span class="n">define_macros</span><span class="o">=</span><span class="n">define_macros</span><span class="p">,</span>
+        <span class="n">include_dirs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;..&#39;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">ext_modules</span> <span class="o">=</span> <span class="n">cythonize</span><span class="p">([</span><span class="n">ext</span><span class="p">]))</span>
+<span class="c1"># python setup.py build_ext -i</span>
+</pre></div>
+
+
+<p>https://raw.githubusercontent.com/quickjs-zh/quickjspp/master/quickjspp.hpp</p>
+    </article>
+
+        <div class="tags">
+            <p>tags: <a href="/tag/c.html">C++</a>, <a href="/tag/python.html">python</a></p>
+        </div>
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                            <li>
+                                <a href="#">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-you can add links in your config file fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.zhihu.com/people/dreamapple/activities">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-zhihu fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                    </ul>
+<p class="copyright text-muted">
+    Blog powered by <a href="http://getpelican.com">Pelican</a>,
+    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  长恨安歌
+</p>                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/theme/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/theme/js/bootstrap.min.js"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="/theme/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>

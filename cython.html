@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>想法记录</title>
+        <title>cython上手记录</title>
 
             <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="神的笔记 Full Atom Feed" />
         <!-- Bootstrap Core CSS -->
@@ -34,27 +34,27 @@
 
 
 
-        <meta name="description" content="Short Summary">
+        <meta name="description" content="cython上手记录">
 
         <meta name="author" content="长恨安歌">
 
-        <meta name="tags" content="pelican">
-        <meta name="tags" content="publishing">
+        <meta name="tags" content="python">
+        <meta name="tags" content="cython">
 
 	                <meta property="og:locale" content="">
 		<meta property="og:site_name" content="神的笔记">
 
 	<meta property="og:type" content="article">
             <meta property="article:author" content="/author/chang-hen-an-ge.html">
-	<meta property="og:url" content="/xiang-fa-ji-lu.html">
-	<meta property="og:title" content="想法记录">
-	<meta property="article:published_time" content="2019-07-26 00:00:00+08:00">
-            <meta property="og:description" content="Short Summary">
+	<meta property="og:url" content="/cython.html">
+	<meta property="og:title" content="cython上手记录">
+	<meta property="article:published_time" content="2019-08-01 00:00:00+08:00">
+            <meta property="og:description" content="cython上手记录">
 
             <meta property="og:image" content="/theme/images/post-bg.jpg">
 </head>
 
-<body class="article-xiang-fa-ji-lu">
+<body class="article-cython">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -87,12 +87,12 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>想法记录</h1>
+                        <h1>cython上手记录</h1>
                         <span class="meta">Posted by
                                 <a href="/author/chang-hen-an-ge.html">长恨安歌</a>
-                             on 周五 26 七月 2019
+                             on 周四 01 八月 2019
                         </span>
-                            <span class="meta">Updated on 周五 26 七月 2019</span>
+                            <span class="meta">Updated on 周四 01 八月 2019</span>
                         
                     </div>
                 </div>
@@ -106,41 +106,76 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <h2>写一个工具，把脚本转化为菜单命令。</h2>
-<ol>
-<li>读取命令的help，分析参数</li>
-<li>生成html页面作为程序执行的向导</li>
-<li>注册该命令为vscode的菜单项</li>
-<li>本身也是使用向导工作</li>
-</ol>
-<h2>写一个pelican-vscode插件</h2>
-<p>功能有：
-1. 集成quickstart功能，自动申请gh-pages
-2. 创建新的页面
-3. 预览
-4. 上传
-5. 状态栏支持
-6. 集成一些第三方的功能，比如paste-image
-7. 可以方便通过查看invoke文件，自动添加命令到菜单</p>
-<h2>收藏夹管理器</h2>
-<p>对收藏加管理是一件比较头疼的事情
-chrome的收藏夹只有一条比较难以管理
-但是今天发现，其收藏夹只能按照目录精心管理，需要花费较大心思
-因为分类较为困难，而且不同维度分类极容易产生正交</p>
-<p>所以可以使用tag即标签进行书签管理。
-对每一个书签进行tag添加，如一个书签有tag：待会读、C++、教程、博客等标签，
-另外需要对tag进行管理，将书签分为多个维度
-已经阅读，还未阅读
-C++、Python等编程语言分类
-系统架构、系统底层等系统层级分类
-参考文档、教程等难易度浅显深入分类
-资源类与详细介绍
-有的相互正交，有的是包含关系，有的是交叉关系
-然后书签栏通过tag进行进入，并且同一个书签可能出现在不同的tag之中。</p>
+        <p>cython是一个</p>
+<h2>比较def, cdef, cpdef</h2>
+<p>https://stackoverflow.com/questions/28362009/definition-of-def-cdef-and-cpdef-in-cython</p>
+<p>The key difference is in where the function can be called from: def functions can be called from Python and Cython while cdef function can be called from Cython and C.</p>
+<p>Both types of functions can be declared with any mixture of typed and untyped arguments, and in both cases the internals are compiled to C by Cython (and the compiled code should be very, very similar):</p>
+<div class="highlight"><pre><span></span><span class="c1"># A Cython class for illustrative purposes</span>
+<span class="n">cdef</span> <span class="k">class</span> <span class="nc">C</span><span class="p">:</span>
+   <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="nb">int</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">C</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span><span class="p">):</span>
+    <span class="c1"># takes an integer, a &quot;C&quot; and an untyped generic python object</span>
+    <span class="k">pass</span>
+
+<span class="n">cdef</span> <span class="n">g</span><span class="p">(</span><span class="nb">int</span> <span class="n">arg1</span><span class="p">,</span> <span class="n">C</span> <span class="n">arg2</span><span class="p">,</span> <span class="n">arg3</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+
+
+<p>In the example above, f will be visible to Python (once it has imported the Cython module) and g will not be and cannot be called from Python. g will translate into a C signature of:</p>
+<div class="highlight"><pre><span></span>PyObject* some_name(int, struct __pyx_obj_11name_of_module_C *, PyObject*)
+</pre></div>
+
+
+<p>(where<code>struct __pyx_obj_11name_of_module_C *</code> is just the C struct that our class C is translated into). This allows it to be passed to C functions as a function pointer for example. In contrast f cannot (easily) be called from C.</p>
+<h3>Restrictions on <code>cdef</code> functions:</h3>
+<ul>
+<li>cdef functions cannot be defined inside other functions - this is because there is no way of storing any captured variables in a C function pointer. E.g. the following code is illegal:</li>
+</ul>
+<div class="highlight"><pre><span></span># WON&#39;T WORK!
+def g(a):
+   cdef (int b):
+      return a+b
+</pre></div>
+
+
+<ul>
+<li>cdef functions cannot take <em>args and </em>*kwargs type arguments. This is because they cannot easily be translated into a C signature.</li>
+</ul>
+<h3>Advantages of cdef functions</h3>
+<ul>
+<li>
+<p>cdef functions can take any type of argument, including those that have no Python equivalent (for example pointers). def functions cannot have these, since they must be callable from Python.</p>
+</li>
+<li>
+<p>cdef functions can also specify a return type (if it is not specified then they return a Python object, PyObject* in C). def functions always return a Python object, so cannot specify a return type:</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span>cdef int h(int* a):
+    # specify a return type and take a non-Python compatible argument
+    return a[0]
+</pre></div>
+
+
+<ul>
+<li>cdef functions are quicker to call than def functions because they translate to a simple C function call.</li>
+</ul>
+<h3>cpdef functions</h3>
+<p>cpdef functions cause Cython to generate a cdef function (that allows a quick function call from Cython) and a def function (which allows you to call it from Python). Interally the def function just calls the cdef function. In terms of the types of arguments allowed, cpdef functions have all the restrictions of both cdef and def functions.</p>
+<h3>When to use a cdef function</h3>
+<p>Once the function has been called there is no difference in the speed that the code inside a cdef and a def function runs at. Therefore, only use a cdef function if:</p>
+<ul>
+<li>You need to pass non-Python types in or out, or</li>
+<li>You need to pass it to C as a function pointer, or</li>
+<li>You are calling it often (so the sped-up function call is important) and you don't need to call it from Python.
+Use a cpdef function when you are calling it often (so the sped-up function call is important) but you do need to call it from Python.</li>
+</ul>
     </article>
 
         <div class="tags">
-            <p>tags: <a href="/tag/pelican.html">pelican</a>, <a href="/tag/publishing.html">publishing</a></p>
+            <p>tags: <a href="/tag/python.html">python</a>, <a href="/tag/cython.html">cython</a></p>
         </div>
 
     <hr>
