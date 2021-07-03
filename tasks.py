@@ -117,7 +117,6 @@ def gh_pages(c):
     cmd = ('ghp-import -b {github_pages_branch} '
               '-m {commit_message} '
               '{deploy_path} -p'.format(**CONFIG))
+    cmd = cmd.replace("'", '"')
     print(cmd)
-    c.run('ghp-import -b {github_pages_branch} '
-          '-m {commit_message} -p '
-          '{deploy_path}'.format(**CONFIG))
+    c.run(cmd)
