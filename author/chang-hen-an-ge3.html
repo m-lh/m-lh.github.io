@@ -4,20 +4,25 @@
 <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>神のメモ - Articles by 长恨安歌</title>
 
 
-        <title>神的笔记 - Articles by 长恨安歌</title>
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
 
-            <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="神的笔记 Full Atom Feed" />
         <!-- Bootstrap Core CSS -->
-        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+        <!-- <link href="/theme/css/bootstrap.min.css" rel="stylesheet"> -->
 
         <!-- Custom CSS -->
-        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+        <!-- <link href="/theme/css/clean-blog.min.css" rel="stylesheet"> -->
+
+        <!-- include bootstrap -->
+        <link href="/theme/css/styles.css" rel="stylesheet">
 
         <!-- Code highlight color scheme -->
-            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+        <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
 
 
         <!-- Custom Fonts -->
@@ -25,45 +30,36 @@
         <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
 
-                    <meta property="og:locale" content="">
-		<meta property="og:site_name" content="神的笔记">
-
-    <meta property="og:title" content="神的笔记 - Articles by 长恨安歌">
-    <meta property="og:type" content="profile">
-    <meta property="profile:first_name" content="长恨安歌">
-    <meta property="profile:last_name" content="">
-    <meta property="profile:username" content="chang-hen-an-ge">
 </head>
 
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">神的笔记</a>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="/">长恨安歌</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- Menu -->
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#content">Content</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/archives.html">Archives</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tags.html">Tags</a></li>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
+                <!--
+                            <li><a href="/category/c.html">C++</a></li>
+                            <li><a href="/category/c-python.html">C++, python</a></li>
+                            <li><a href="/category/misc.html">misc</a></li>
+                            <li><a href="/category/mix.html">Mix</a></li>
+                            <li><a href="/category/python.html">Python</a></li>
+                            <li><a href="/category/ubuntu.html">Ubuntu</a></li>
+                            <li><a href="/category/wsl.html">wsl</a></li>
 
+                -->
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
@@ -81,17 +77,17 @@
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- Main Content (base.html) -->
+    <div class="container" id="content">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="post-preview">
             <a href="/shi-yong-veentu-li-jie-precious-recallhe-f1.html" rel="bookmark" title="Permalink to 使用veen图理解precious、recall和F1">
                 <h2 class="post-title">
                     使用veen图理解precious、recall和F1
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     使用Venn图理解precision、recall和F1 对于我来说，精确度，召回率这些东西，都看过好几次了，但是一直没有多少印象。准确的说是没有多少直观的印象(intuition)。...
                 </p>
             <p class="post-meta">Posted by
@@ -105,7 +101,7 @@
                     搭建jekyll博客
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     搭建jekyll博客 我的第一篇文章 以前就使用pelican搭建过静态的博客，放在github上，但是常年不使用，早已忘光了。 现在跟着阮一峰的教程重来一遍，还是踩了一些坑。 其他的参考资料是 - 选择了一个主题，挺喜欢，选择主题之后Creating a GitHub...
                 </p>
             <p class="post-meta">Posted by
@@ -116,12 +112,12 @@
 
     <hr>
     <!-- Pager -->
-    <ul class="pager">
-        <li class="next">
-                <a href="/author/chang-hen-an-ge2.html"> &larr; Newest Posts</a>
-        </li>
-    </ul>
-    Page 3 / 3
+    
+    <div class="d-flex justify-content-between mb-4 pager">
+            <a class="btn btn-primary text-uppercase" href="/author/chang-hen-an-ge2.html"> &larr; Newest Posts</a>
+        <p class="btn text-uppercase">Page 3 / 3</p>
+            <a class="btn disabled text-uppercase" href="#">Older Posts &rarr; </a>
+    </div>
     <hr>
             </div>
         </div>
@@ -129,45 +125,34 @@
 
     <hr>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                            <li>
-                                <a href="#">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-you can add links in your config file fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.zhihu.com/people/dreamapple/activities">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-zhihu fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                    </ul>
-<p class="copyright text-muted">
-    Blog powered by <a href="http://getpelican.com">Pelican</a>,
-    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  长恨安歌
-</p>                </div>
+    <!-- Contact-->
+    <section class="contact-section bg-black">
+        <div class="container px-4 px-lg-5">
+            <div class="social d-flex justify-content-center">
+                <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
             </div>
         </div>
+    </section>
+
+    <!-- Footer-->
+    <footer class="footer bg-black small text-center text-white-50">
+        Blog powered by <a href="http://getpelican.com">Pelican</a>,
+        which takes great advantage of <a href="http://python.org">Python</a>. <br />
+        <div class="container px-4 px-lg-5">Copyright &copy;  长恨安歌</div>
     </footer>
 
     <!-- jQuery -->
     <script src="/theme/js/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="/theme/js/bootstrap.min.js"></script>
+    <!-- <script src="/theme/js/bootstrap.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Custom Theme JavaScript -->
         <script src="/theme/js/clean-blog.min.js"></script>
+        <script src="/theme/js/scripts.js"></script>
 
 </body>
 

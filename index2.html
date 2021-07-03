@@ -4,20 +4,25 @@
 <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>神のメモ</title>
 
 
-        <title>神的笔记</title>
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
 
-            <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="神的笔记 Full Atom Feed" />
         <!-- Bootstrap Core CSS -->
-        <link href="/theme/css/bootstrap.min.css" rel="stylesheet">
+        <!-- <link href="/theme/css/bootstrap.min.css" rel="stylesheet"> -->
 
         <!-- Custom CSS -->
-        <link href="/theme/css/clean-blog.min.css" rel="stylesheet">
+        <!-- <link href="/theme/css/clean-blog.min.css" rel="stylesheet"> -->
+
+        <!-- include bootstrap -->
+        <link href="/theme/css/styles.css" rel="stylesheet">
 
         <!-- Code highlight color scheme -->
-            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+        <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
+
 
 
         <!-- Custom Fonts -->
@@ -25,68 +30,84 @@
         <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
 
-                <meta property="og:locale" content="">
-		<meta property="og:site_name" content="神的笔记">
 </head>
 
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">神的笔记</a>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="/">长恨安歌</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <!-- Menu -->
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#content">Content</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/archives.html">Archives</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tags.html">Tags</a></li>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
+                <!--
+                            <li><a href="/category/c.html">C++</a></li>
+                            <li><a href="/category/c-python.html">C++, python</a></li>
+                            <li><a href="/category/misc.html">misc</a></li>
+                            <li><a href="/category/mix.html">Mix</a></li>
+                            <li><a href="/category/python.html">Python</a></li>
+                            <li><a href="/category/ubuntu.html">Ubuntu</a></li>
+                            <li><a href="/category/wsl.html">wsl</a></li>
 
+                -->
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
 
-    <!-- Page Header -->
+    <!-- Page Header (index.html)-->
     <!-- Set your background image for this header on the line below. -->
-        <header class="intro-header" style="background-image: url('/theme/images/home-bg.jpg')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="page-heading">
-                        <h1>神的笔记</h1>
-                    </div>
+    <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, rgb(0, 0, 0) 100%), url('/theme/images/home-bg.jpg')")>
+        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+            <div class="d-flex justify-content-center">
+                <div class="text-center">
+                    <h1 class="mx-auto my-0 text-uppercase">神のメモ</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">笔记内容不是来自人的思维，而是自然就存在于此。</h2>
+                    <!-- <a class="btn btn-primary" href="#about">Get Started</a> -->
+                    <a href="#about">
+                        <i class="fas fa-chevron-down fa-2x"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <!-- About-->
+    <section class="about-section text-center" id="about">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="text-white mb-4">长恨安歌的含义</h2>
+                    <p class="text-white-50">
+                        恨为遗憾之意，安为反问，整体表示不要遗憾，努力向前。
+                    </p>
+                </div>
+            </div>
+            <img class="img-fluid" src="theme/images/ipad.png" alt="..." />
+        </div>
+    </section>
+
+
+    <!-- Main Content (base.html) -->
+    <div class="container" id="content">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="post-preview">
             <a href="/shi-yi-yue-liao.html" rel="bookmark" title="Permalink to 十一月了">
                 <h2 class="post-title">
                     十一月了
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     游戏玩了好久。终于靠着意志停了下来。 如果每天不把自己弄到精疲力尽，大脑就会胡思乱想。 本来是不想去实习的，但是现在感觉想要去实习的冲动在内心里面蠢蠢欲动。 虽然现在在印迹过的挺潇洒，但是感觉浪费时间比较严重。 我总不能每天弄界面写到简历上，求算法的岗位吧。...
                 </p>
             <p class="post-meta">Posted by
@@ -100,7 +121,7 @@
                     addition_rnn
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     In [1]: import numpy as np # 模型和数据集的参数. TRAINING_SIZE = 50000 DIGITS = 3 INVERT = True # Maximum length of input is 'int + int' (e.g.,...
                 </p>
             <p class="post-meta">Posted by
@@ -114,7 +135,7 @@
                     Win10 Bash Mysql
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     http://blog.csdn.net/quqi99/article/details/45100933 对于ubuntu的虚机使用upstart时会报错： Start: Unable To Connect To Upstart: Failed To Connect To...
                 </p>
             <p class="post-meta">Posted by
@@ -128,7 +149,7 @@
                     Numpy的axis参数理解
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     numpy的axis参数理解 numpy中很多操作都有axis参数，以前使用的过程中都是现场实验，到底需要设置哪一个轴，今天终于受不了了，下决心搞懂这个问题。 比如一个多维数组， import numpy as np a =...
                 </p>
             <p class="post-meta">Posted by
@@ -142,7 +163,7 @@
                     CS224N总结
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     CS224n总结，收获，遗憾...
                 </p>
             <p class="post-meta">Posted by
@@ -156,7 +177,7 @@
                     静心
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     俗话说无欲则钢，如果没有什么欲望，那么人也就没有什么弱点。然而，生而为人，却不可能没有什么欲望。衣食住行，功名利禄。道家云小隐隐于野，大隐隐于市。身在红尘中心里有出市意。然则宇宙无限，岁月无境。人生一世，草木一春。今生二十三载如烟云，来日方长渡余生。...
                 </p>
             <p class="post-meta">Posted by
@@ -170,7 +191,7 @@
                     leetcode 303
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     leetcode 303. Range Sum Query - Immutable Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j),...
                 </p>
             <p class="post-meta">Posted by
@@ -184,7 +205,7 @@
                     leetcode 307
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     leetcode 307 题目描述 Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive. The update(i,...
                 </p>
             <p class="post-meta">Posted by
@@ -198,7 +219,7 @@
                     五月十三日的日记
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     五月十三日的日记 2017.05.13 13:07 我觉得这篇日记公开也没什么。 绝望的黑夜 因为水痘在家躺了两个星期。水痘基本上好的，但是最近身体每况愈下。大抵是因为思想负担太严重，肝郁——中医大夫说。...
                 </p>
             <p class="post-meta">Posted by
@@ -212,7 +233,7 @@
                     leetcode 491
                 </h2>
             </a>
-                <p class="article-summary">
+                <p class="post-preview">
                     leetcode 491 中等难度，但是暴力貌似也能通过 class Solution(object): def findSubsequences(self, nums): """ :type nums: List[int] :rtype: List[List[int]]...
                 </p>
             <p class="post-meta">Posted by
@@ -223,13 +244,12 @@
 
     <hr>
     <!-- Pager -->
-    <ul class="pager">
-        <li class="next">
-                <a href="/index3.html">Older Posts &rarr;</a>
-                <a href="/index.html"> &larr; Newest Posts</a>
-        </li>
-    </ul>
-    Page 2 / 3
+    
+    <div class="d-flex justify-content-between mb-4 pager">
+            <a class="btn btn-primary text-uppercase" href="/index.html"> &larr; Newest Posts</a>
+        <p class="btn text-uppercase">Page 2 / 3</p>
+            <a class="btn btn-primary text-uppercase" href="/index3.html">Older Posts &rarr; </a>
+    </div>
     <hr>
             </div>
         </div>
@@ -237,45 +257,34 @@
 
     <hr>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                            <li>
-                                <a href="#">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-you can add links in your config file fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.zhihu.com/people/dreamapple/activities">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-zhihu fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                    </ul>
-<p class="copyright text-muted">
-    Blog powered by <a href="http://getpelican.com">Pelican</a>,
-    which takes great advantage of <a href="http://python.org">Python</a>. <br />        &copy;  长恨安歌
-</p>                </div>
+    <!-- Contact-->
+    <section class="contact-section bg-black">
+        <div class="container px-4 px-lg-5">
+            <div class="social d-flex justify-content-center">
+                <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
+                <a class="mx-2" href="#!"><i class="fab fa-github"></i></a>
             </div>
         </div>
+    </section>
+
+    <!-- Footer-->
+    <footer class="footer bg-black small text-center text-white-50">
+        Blog powered by <a href="http://getpelican.com">Pelican</a>,
+        which takes great advantage of <a href="http://python.org">Python</a>. <br />
+        <div class="container px-4 px-lg-5">Copyright &copy;  长恨安歌</div>
     </footer>
 
     <!-- jQuery -->
     <script src="/theme/js/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="/theme/js/bootstrap.min.js"></script>
+    <!-- <script src="/theme/js/bootstrap.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Custom Theme JavaScript -->
         <script src="/theme/js/clean-blog.min.js"></script>
+        <script src="/theme/js/scripts.js"></script>
 
 </body>
 

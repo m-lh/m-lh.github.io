@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>神的笔记</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-08-10T00:00:00+08:00</updated><entry><title>使用clang的python绑定cindex解析C++文件</title><link href="/shi-yong-clangde-pythonbang-ding-cindexjie-xi-cwen-jian.html" rel="alternate"></link><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-08-10:/shi-yong-clangde-pythonbang-ding-cindexjie-xi-cwen-jian.html</id><summary type="html">&lt;p&gt;使用clang的python绑定cindex解析C++文件&lt;/p&gt;</summary><content type="html">&lt;p&gt;在Python中，对于C语言进行分析的话，可以使用pycparser，但是如果对C++进行分析的话，只有clang的Python绑定Cindex了。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>神のメモ</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2019-08-10T00:00:00+08:00</updated><subtitle>笔记内容不是来自人的思维，而是自然就存在于此。</subtitle><entry><title>使用clang的python绑定cindex解析C++文件</title><link href="/shi-yong-clangde-pythonbang-ding-cindexjie-xi-cwen-jian.html" rel="alternate"></link><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-08-10:/shi-yong-clangde-pythonbang-ding-cindexjie-xi-cwen-jian.html</id><summary type="html">&lt;p&gt;使用clang的python绑定cindex解析C++文件&lt;/p&gt;</summary><content type="html">&lt;p&gt;在Python中，对于C语言进行分析的话，可以使用pycparser，但是如果对C++进行分析的话，只有clang的Python绑定Cindex了。&lt;/p&gt;
 &lt;h2&gt;安装&lt;/h2&gt;
 &lt;p&gt;cindex随着clang发行，在github的位置是[https://github.com/llvm-mirror/clang/blob/master/bindings/python/clang/cindex.py]，
 但是安装比较繁琐。&lt;/p&gt;
@@ -215,7 +215,20 @@ history | cut -c28-&lt;/p&gt;
 &lt;p&gt;su meng
 wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
-```&lt;/p&gt;</content><category term="python"></category></entry><entry><title>Python有意思库的记录</title><link href="/pythonyou-yi-si-ku-de-ji-lu.html" rel="alternate"></link><published>2019-07-31T00:00:00+08:00</published><updated>2019-07-31T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-31:/pythonyou-yi-si-ku-de-ji-lu.html</id><summary type="html">&lt;p&gt;记录一些有意思的Python库&lt;/p&gt;</summary><content type="html">&lt;h3&gt;&lt;a href="https://github.com/tldr-pages/tldr"&gt;tldr&lt;/a&gt;&lt;/h3&gt;
+```&lt;/p&gt;
+&lt;p&gt;祝贺！ ShadowsocksR 已经配置成功!
+服务器 IP:  129.226.135.195
+服务器 端口:  7788
+连接密码:  qwe
+加密:  aes-256-cfb
+协议:  auth_sha1_v4
+混淆:  http_simple&lt;/p&gt;
+&lt;p&gt;请下载和你系统版本对应的SSR客户端使用该服务
+SSR所有客户端下载地址：
+ https://www.qcgzxw.cn/301.html&lt;/p&gt;
+&lt;p&gt;Vultr实战搭建ssr+锐速教程（内附视频教程）：
+ https://www.qcgzxw.cn/1640.html&lt;/p&gt;
+&lt;p&gt;小文's blog地址： www.qcgzxw.cn&lt;/p&gt;</content><category term="python"></category></entry><entry><title>Python有意思库的记录</title><link href="/pythonyou-yi-si-ku-de-ji-lu.html" rel="alternate"></link><published>2019-07-31T00:00:00+08:00</published><updated>2019-07-31T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-31:/pythonyou-yi-si-ku-de-ji-lu.html</id><summary type="html">&lt;p&gt;记录一些有意思的Python库&lt;/p&gt;</summary><content type="html">&lt;h3&gt;&lt;a href="https://github.com/tldr-pages/tldr"&gt;tldr&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TL;DR stands for "Too Long; Didn't Read".
 对于常用的命令可以代替man手册，只看使用方法。
 不过复杂的内容还是应该使用man查找。&lt;/p&gt;</content><category term="python"></category></entry><entry><title>上手quickjs</title><link href="/shang-shou-quickjs.html" rel="alternate"></link><published>2019-07-31T00:00:00+08:00</published><updated>2019-07-31T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-31:/shang-shou-quickjs.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;p&gt;闲逛github看到了https://github.com/quickjs-zh/QuickJS，上次还在新闻上看到了。这个zh项目只是做了一点翻译，有点像是盗版的。&lt;/p&gt;
@@ -304,7 +317,39 @@ touch setup.py
 &lt;p&gt;但是集成在vscode的一个新的页面&lt;/p&gt;
 &lt;h3&gt;2. 屏蔽git的操作&lt;/h3&gt;
 &lt;p&gt;看不到对git的操作。
-新建一个树的展示板&lt;/p&gt;</content><category term="mix"></category></entry><entry><title>实现简单的C++ REPL</title><link href="/shi-xian-jian-dan-de-c-repl.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/shi-xian-jian-dan-de-c-repl.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;CxxREPL功能介绍&lt;/h2&gt;
+新建一个树的展示板&lt;/p&gt;
+&lt;h1&gt;简单设计&lt;/h1&gt;
+&lt;h2&gt;菜单栏&lt;/h2&gt;
+&lt;p&gt;对于项目为“博客”在文件菜单中，添加“新建博客”&lt;/p&gt;
+&lt;h2&gt;功能栏&lt;/h2&gt;
+&lt;p&gt;在右上角，md侧边预览旁边，添加 预览博客 功能&lt;/p&gt;
+&lt;h2&gt;左侧&lt;/h2&gt;
+&lt;p&gt;添加博客树状管理菜单
+有博客列表，未发布，已更改，未更改
+按照时间排序，支持搜索&lt;/p&gt;
+&lt;p&gt;功能栏有：提交&lt;/p&gt;
+&lt;h1&gt;关键问题&lt;/h1&gt;
+&lt;h2&gt;创建插件&lt;/h2&gt;
+&lt;p&gt;使用模版开始&lt;/p&gt;
+&lt;h2&gt;设置配置&lt;/h2&gt;
+&lt;h1&gt;详细实现&lt;/h1&gt;
+&lt;p&gt;下面便开始进行实现，便实现边记录。&lt;/p&gt;
+&lt;h2&gt;模版创建与测试&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;npm install -g yo generator-code
+yo code
+code .
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;F5打开新窗口，ctrl+shift+p
+输入Hello World回车
+右下角弹出"Hello world!"&lt;/p&gt;
+&lt;h2&gt;&lt;/h2&gt;
+&lt;h1&gt;参考资料&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.cnblogs.com/liuxianan/p/vscode-plugin-overview.html"&gt;VSCode插件开发全攻略&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><category term="mix"></category></entry><entry><title>实现简单的C++ REPL</title><link href="/shi-xian-jian-dan-de-c-repl.html" rel="alternate"></link><published>2019-07-26T00:00:00+08:00</published><updated>2019-07-26T00:00:00+08:00</updated><author><name>长恨安歌</name></author><id>tag:None,2019-07-26:/shi-xian-jian-dan-de-c-repl.html</id><summary type="html">&lt;p&gt;Short Summary&lt;/p&gt;</summary><content type="html">&lt;h2&gt;CxxREPL功能介绍&lt;/h2&gt;
 &lt;p&gt;CxxREPL实现了一个即时C++交互执行器。如下图
 &lt;img alt="" src="images/screen.svg"&gt;&lt;/p&gt;
 &lt;p&gt;功能如下：
