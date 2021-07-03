@@ -3,7 +3,8 @@
 from __future__ import unicode_literals
 
 AUTHOR = '长恨安歌'
-SITENAME = '神的笔记'
+SITENAME = '神のメモ'
+SITESUBTITLE = '笔记内容不是来自人的思维，而是自然就存在于此。'
 SITEURL = ''
 
 PATH = 'content'
@@ -34,4 +35,4 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
-THEME = "./pelican-clean-blog-theme"
+THEME = "./pelican-clean-blog-theme-modified"
