@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }} - Archives{% endblock %}
+
+{% block header %}
+    <!-- Page Header (archives.html)-->
+    <!-- Set your background image for this header on the line below. -->
+
+    {% if HEADER_COVER %}
+        <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, rgb(0, 0, 0) 100%), url('{{ SITEURL }}/{{ HEADER_COVER }}')">
+
+    {% else %}
+        <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, rgb(0, 0, 0) 100%), url('{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/post-bg.jpg')">
+    {% endif %}
+
+        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center article-header">
+            <div class="d-flex justify-content-center">
+                <div class="text-center">
+                    <div class="post-heading">
+                        <h1>Archives for {{ SITENAME }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+{% endblock header %}
+
+{% block content %}
+    <dl>
+        {% for article in dates %}
+            <dt>{{ article.locale_date }}</dt>
+            <dd><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></dd>
+        {% endfor %}
+        <hr>
+    </dl>
+{% endblock content %}

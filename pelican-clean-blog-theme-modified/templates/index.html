@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <!-- Page Header (index.html)-->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, rgb(0, 0, 0) 100%), url('{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/home-bg.jpg')")>
+        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+            <div class="d-flex justify-content-center">
+                <div class="text-center">
+                    <h1 class="mx-auto my-0 text-uppercase">{{ SITENAME }}</h1>
+                    <h2 class="text-white-50 mx-auto mt-2 mb-5">{{ SITESUBTITLE }}</h2>
+                    <!-- <a class="btn btn-primary" href="#about">Get Started</a> -->
+                    <a href="#about">
+                        <i class="fas fa-chevron-down fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About-->
+    <section class="about-section text-center" id="about">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="text-white mb-4">长恨安歌的含义</h2>
+                    <p class="text-white-50">
+                        恨为遗憾之意，安为反问，整体表示不要遗憾，努力向前。
+                    </p>
+                </div>
+            </div>
+            <img class="img-fluid" src="theme/images/ipad.png" alt="..." />
+        </div>
+    </section>
+
+{% endblock header %}
+
+{% block content %}
+    {% if INTRO_CONTENT %}
+        <div class="row intro-content">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                {{ INTRO_CONTENT }}
+            </div>
+        </div>
+    {% endif %}
+    {% for article in articles_page.object_list %}
+        <div class="post-preview">
+            <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">
+                <h2 class="post-title">
+                    {{ article.title }}
+                </h2>
+            </a>
+            {% if SHOW_FULL_ARTICLE %}
+                {{ article.content }}
+            {% else %}
+                <p class="post-preview">
+                {% if article.has_summary %}
+                    {{ article.summary }}
+                {% elif article.summary %}
+                    {{ article.summary|striptags|truncate(140) }}
+                {% endif %}
+                </p>
+            {% endif %}
+            <p class="post-meta">Posted by
+                {% for author in article.authors %}
+                    <a href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a>
+                {% endfor %}
+                 on {{ article.locale_date }}
+            </p>
+            {% include 'comments.html' %}
+        </div>
+    {% endfor %}
+
+    {% include "pagination.html" %}
+{% endblock content %}

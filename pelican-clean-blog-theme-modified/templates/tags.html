@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ SITENAME }} - Tags{% endblock %}
+
+{% block header %}
+    <!-- Page Header (tags.html)-->
+    {% if HEADER_COVER %}
+        <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, rgb(0, 0, 0) 100%), url('{{ SITEURL }}/{{ HEADER_COVER }}')">
+    {% else %}
+        <header class="masthead" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 75%, rgb(0, 0, 0) 100%), url('{{ SITEURL }}/{{ THEME_STATIC_DIR }}/images/post-bg.jpg')">
+    {% endif %}
+
+        <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center article-header">
+            <div class="d-flex justify-content-center">
+                <div class="text-center">
+                    <div class="post-heading">
+                        <h1>{{ SITENAME }} - Tags</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+{% endblock header %}
+
+{% block content %}
+    <h1>Tags for {{ SITENAME }}</h1>
+    {%- for tag, articles in tags|sort %}
+        <li><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a> ({{ articles|count }})</li>
+    {% endfor %}
+{% endblock content %}

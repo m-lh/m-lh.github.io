@@ -1,0 +1,19 @@
+{% if DEFAULT_PAGINATION and articles_paginator.num_pages > 1 %}
+    <hr>
+    <!-- Pager -->
+    
+    <div class="d-flex justify-content-between mb-4 pager">
+        {% if articles_page.has_previous() %}
+            <a class="btn btn-primary text-uppercase" href="{{ SITEURL }}/{{ articles_previous_page.url }}"> &larr; Newest Posts</a>
+        {% else %}
+            <a class="btn disabled text-uppercase" href="#"> &larr; Newest Posts</a>
+        {% endif %}
+        <p class="btn text-uppercase">Page {{ articles_page.number }} / {{ articles_paginator.num_pages }}</p>
+        {% if articles_page.has_next() %}
+            <a class="btn btn-primary text-uppercase" href="{{ SITEURL }}/{{ articles_next_page.url }}">Older Posts &rarr; </a>
+        {% else %}
+            <a class="btn disabled text-uppercase" href="#">Older Posts &rarr; </a>
+        {% endif %}
+    </div>
+    <hr>
+{% endif %}
